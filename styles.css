@@ -1,74 +1,64 @@
-/* Custom styles to enhance the design */
-body {
-    line-height: 1.6;
+/* styles.css */
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
 }
 
-.container {
-    animation: fadeIn 0.5s ease-in-out;
+.active-task {
+    position: relative;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.active-task::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #4f46e5;
+    animation: pulse 1.5s infinite;
 }
 
-.material-card {
-    height: 100px;
-    transition: transform 0.2s;
-}
-
-.material-card:hover {
-    transform: translateY(-5px);
-}
-
-/* Task status colors */
 .task-status-complete {
     background-color: #ecfdf5;
     color: #065f46;
+    border-left: 4px solid #10b981;
 }
 
 .task-status-in-progress {
     background-color: #eff6ff;
     color: #1e40af;
+    border-left: 4px solid #3b82f6;
 }
 
 .task-status-not-started {
     background-color: #fef2f2;
     color: #991b1b;
+    border-left: 4px solid #ef4444;
 }
 
-/* Progress bar styling */
-.progress-container {
+.task-row:hover {
+    background-color: #f9fafb;
+}
+
+.chart-container {
+    position: relative;
+    height: 200px;
     width: 100%;
-    background-color: #e5e7eb;
-    border-radius: 4px;
-    overflow: hidden;
 }
 
-.progress-bar {
-    height: 8px;
-    background-color: #4f46e5;
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
-
-/* Responsive table adjustments */
-@media (max-width: 640px) {
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .task-details {
+        flex-direction: column;
+        align-items: flex-start;
     }
-}
-
-/* Smooth transitions for interactive elements */
-button, input[type="checkbox"], .material-card {
-    transition: all 0.2s ease;
-}
-
-/* Focus styles for accessibility */
-button:focus, input:focus, textarea:focus {
-    outline: none;
-    ring: 2px solid #6366f1;
-    ring-offset: 2px;
+    
+    .task-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }

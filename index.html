@@ -3,197 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Time Manager</title>
+    <title>Advanced Study Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="font-inter bg-gray-50 min-h-screen">
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
         <!-- Header Section -->
         <header class="text-center mb-10">
-            <h1 class="text-4xl font-bold text-indigo-700 mb-2">Study Time Manager</h1>
-            <p class="text-gray-600">Stay focused, track progress, and manage your study time efficiently</p>
+            <h1 class="text-4xl font-bold text-indigo-700 mb-2">Advanced Study Manager</h1>
+            <p class="text-gray-600">Comprehensive task tracking with performance analytics</p>
         </header>
 
-        <!-- Time Display Section -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-            <!-- Current Time Box -->
+        <!-- Dashboard Overview -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <!-- Time Tracking Card -->
             <div class="bg-white rounded-xl shadow-md p-6 transition-all hover:shadow-lg">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Current Time</h2>
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Today's Study</h2>
                 <div class="flex items-center justify-between">
                     <div>
-                        <div id="current-time" class="text-3xl font-bold text-indigo-600"></div>
-                        <div id="current-date" class="text-gray-600 mt-2"></div>
+                        <div id="today-actual" class="text-3xl font-bold text-indigo-600">0h 0m</div>
+                        <div class="text-gray-600 text-sm">of <span id="today-estimated">0h 0m</span> planned</div>
                     </div>
-                    <i class="fas fa-clock text-4xl text-indigo-300"></i>
+                    <i class="fas fa-chart-pie text-4xl text-indigo-300"></i>
                 </div>
             </div>
 
-            <!-- Timer Box -->
+            <!-- Weekly Progress Card -->
             <div class="bg-white rounded-xl shadow-md p-6 transition-all hover:shadow-lg">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Study Timer</h2>
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Weekly Progress</h2>
                 <div class="flex items-center justify-between">
                     <div>
-                        <div id="timer-display" class="text-3xl font-bold text-indigo-600">00:00:00</div>
-                        <div class="flex space-x-3 mt-4">
-                            <button id="start-timer" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                                <i class="fas fa-play mr-2"></i>Start
-                            </button>
-                            <button id="stop-timer" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors" disabled>
-                                <i class="fas fa-stop mr-2"></i>Stop
-                            </button>
-                            <button id="reset-timer" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
-                                <i class="fas fa-redo mr-2"></i>Reset
-                            </button>
+                        <div id="weekly-completion" class="text-3xl font-bold text-indigo-600">0%</div>
+                        <div class="text-gray-600 text-sm">tasks completed</div>
+                    </div>
+                    <i class="fas fa-calendar-week text-4xl text-indigo-300"></i>
+                </div>
+            </div>
+
+            <!-- Current Task Card -->
+            <div class="bg-white rounded-xl shadow-md p-6 transition-all hover:shadow-lg">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Current Task</h2>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div id="current-task-name" class="text-lg font-medium text-indigo-600">None</div>
+                        <div id="current-task-time" class="text-gray-600 text-sm">0h 0m / 0h 0m</div>
+                    </div>
+                    <i class="fas fa-spinner fa-pulse text-4xl text-indigo-300" id="active-task-spinner"></i>
+                </div>
+            </div>
+
+            <!-- Productivity Card -->
+            <div class="bg-white rounded-xl shadow-md p-6 transition-all hover:shadow-lg">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Productivity</h2>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div id="accuracy-rate" class="text-3xl font-bold text-indigo-600">0%</div>
+                        <div class="text-gray-600 text-sm">time estimation accuracy</div>
+                    </div>
+                    <i class="fas fa-bullseye text-4xl text-indigo-300"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Task Management Section -->
+            <div class="lg:col-span-2">
+                <!-- Task Controls -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex space-x-4">
+                        <button id="today-tasks-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Today</button>
+                        <button id="upcoming-tasks-btn" class="px-4 py-2 bg-white text-gray-700 border rounded-lg">Upcoming</button>
+                        <button id="recurring-tasks-btn" class="px-4 py-2 bg-white text-gray-700 border rounded-lg">Recurring</button>
+                    </div>
+                    <button id="add-task-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Add Task
+                    </button>
+                </div>
+
+                <!-- Add/Edit Task Form (Hidden by default) -->
+                <div id="task-form-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-2xl">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4" id="task-form-title">Add New Task</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="col-span-2">
+                                <label for="edit-task-name" class="block text-sm font-medium text-gray-700 mb-1">Task Title*</label>
+                                <input type="text" id="edit-task-name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="edit-task-date" class="block text-sm font-medium text-gray-700 mb-1">Date*</label>
+                                <input type="date" id="edit-task-date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="edit-task-time" class="block text-sm font-medium text-gray-700 mb-1">Estimated Time (minutes)*</label>
+                                <input type="number" id="edit-task-time" min="1" value="30" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div class="col-span-2">
+                                <label for="edit-task-desc" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                <textarea id="edit-task-desc" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Recurrence</label>
+                                <select id="edit-task-recurrence" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="none">Does not repeat</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="flex items-end">
+                                <button id="save-task-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors w-full">
+                                    <i class="fas fa-save mr-2"></i>Save Task
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <i class="fas fa-hourglass-half text-4xl text-indigo-300"></i>
+                </div>
+
+                <!-- Tasks List -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Task Details</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasks-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Tasks will be added here dynamically -->
+                                <tr id="no-tasks-row">
+                                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">No tasks for today. Click "Add Task" to get started!</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Currently Working On Label -->
-        <div id="current-task-label" class="bg-indigo-100 text-indigo-800 px-4 py-3 rounded-lg mb-6 hidden">
-            <i class="fas fa-tasks mr-2"></i>
-            <span>Currently working on: </span>
-            <span id="current-task-name" class="font-semibold"></span>
+            <!-- Analytics Section -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Daily Study Trend</h2>
+                    <canvas id="daily-chart" height="200"></canvas>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Time Estimation Accuracy</h2>
+                    <canvas id="accuracy-chart" height="200"></canvas>
+                </div>
+            </div>
         </div>
 
-        <!-- Task Management Section -->
-        <section class="mb-10">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-semibold text-gray-800">Task Management</h2>
-                <button id="add-task-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-plus mr-2"></i>Add Task
-                </button>
-            </div>
-
-            <!-- Add Task Form (Hidden by default) -->
-            <div id="add-task-form" class="bg-white rounded-xl shadow-md p-6 mb-6 hidden">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Task</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label for="task-name" class="block text-sm font-medium text-gray-700 mb-1">Task Name</label>
-                        <input type="text" id="task-name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label for="task-time" class="block text-sm font-medium text-gray-700 mb-1">Estimated Time (minutes)</label>
-                        <input type="number" id="task-time" min="1" value="30" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div class="flex items-end">
-                        <button id="save-task-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors w-full">
-                            <i class="fas fa-save mr-2"></i>Save Task
-                        </button>
+        <!-- Progress Modal -->
+        <div id="progress-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Update Task Progress</h3>
+                <div class="mb-4">
+                    <label for="progress-input" class="block text-sm font-medium text-gray-700 mb-2">Progress (%)</label>
+                    <input type="range" id="progress-input" min="0" max="100" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between mt-1">
+                        <span class="text-xs text-gray-500">0%</span>
+                        <span id="progress-value" class="text-xs font-medium text-indigo-600">0%</span>
+                        <span class="text-xs text-gray-500">100%</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Tasks Table -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Task Name</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tasks-table-body" class="bg-white divide-y divide-gray-200">
-                            <!-- Tasks will be added here dynamically -->
-                            <tr id="no-tasks-row">
-                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">No tasks added yet. Click "Add Task" to get started!</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="mb-4">
+                    <label for="actual-time-input" class="block text-sm font-medium text-gray-700 mb-2">Actual Time (minutes)</label>
+                    <input type="number" id="actual-time-input" min="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
-            </div>
-        </section>
-
-        <!-- Study Materials Section -->
-        <section>
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-semibold text-gray-800">Study Materials</h2>
-                <button id="add-material-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-plus mr-2"></i>Add Material
-                </button>
-            </div>
-
-            <!-- Add Material Form (Hidden by default) -->
-            <div id="add-material-form" class="bg-white rounded-xl shadow-md p-6 mb-6 hidden">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Study Material</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label for="material-name" class="block text-sm font-medium text-gray-700 mb-1">Material Name</label>
-                        <input type="text" id="material-name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label for="material-url" class="block text-sm font-medium text-gray-700 mb-1">URL</label>
-                        <input type="url" id="material-url" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div class="flex items-end">
-                        <button id="save-material-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors w-full">
-                            <i class="fas fa-save mr-2"></i>Save Material
-                        </button>
-                    </div>
+                <div class="mb-4">
+                    <label for="progress-notes" class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                    <textarea id="progress-notes" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
-            </div>
-
-            <!-- Materials Grid -->
-            <div id="materials-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                <!-- Default study materials -->
-                <div class="material-card bg-white rounded-xl shadow-md p-4 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer" data-url="https://www.youtube.com">
-                    <i class="fab fa-youtube text-3xl text-red-500 mb-2"></i>
-                    <span class="text-sm font-medium text-gray-800 text-center">YouTube</span>
+                <div class="flex justify-end space-x-3">
+                    <button id="cancel-progress-btn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">Cancel</button>
+                    <button id="save-progress-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">Save</button>
                 </div>
-                <div class="material-card bg-white rounded-xl shadow-md p-4 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer" data-url="https://chat.openai.com">
-                    <i class="fas fa-robot text-3xl text-green-500 mb-2"></i>
-                    <span class="text-sm font-medium text-gray-800 text-center">ChatGPT</span>
-                </div>
-                <div class="material-card bg-white rounded-xl shadow-md p-4 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer" data-url="https://docs.google.com">
-                    <i class="fab fa-google-drive text-3xl text-blue-500 mb-2"></i>
-                    <span class="text-sm font-medium text-gray-800 text-center">Google Docs</span>
-                </div>
-                <div class="material-card bg-white rounded-xl shadow-md p-4 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer" data-url="https://github.com">
-                    <i class="fab fa-github text-3xl text-gray-800 mb-2"></i>
-                    <span class="text-sm font-medium text-gray-800 text-center">GitHub</span>
-                </div>
-                <div class="material-card bg-white rounded-xl shadow-md p-4 flex flex-col items-center justify-center transition-all hover:shadow-lg cursor-pointer" data-url="https://stackoverflow.com">
-                    <i class="fab fa-stack-overflow text-3xl text-orange-500 mb-2"></i>
-                    <span class="text-sm font-medium text-gray-800 text-center">Stack Overflow</span>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Progress Modal -->
-    <div id="progress-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Update Progress</h3>
-            <div class="mb-4">
-                <label for="progress-input" class="block text-sm font-medium text-gray-700 mb-2">Progress (%)</label>
-                <input type="range" id="progress-input" min="0" max="100" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between mt-1">
-                    <span class="text-xs text-gray-500">0%</span>
-                    <span id="progress-value" class="text-xs font-medium text-indigo-600">0%</span>
-                    <span class="text-xs text-gray-500">100%</span>
-                </div>
-            </div>
-            <div class="mb-4">
-                <label for="progress-notes" class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
-                <textarea id="progress-notes" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-            </div>
-            <div class="flex justify-end space-x-3">
-                <button id="cancel-progress-btn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">Cancel</button>
-                <button id="save-progress-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">Save</button>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
