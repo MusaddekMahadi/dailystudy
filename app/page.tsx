@@ -1,39 +1,37 @@
-"use client"
-import { DashboardCards } from "@/components/dashboard-cards"
-import { TaskManager } from "@/components/task-manager"
-import { Analytics } from "@/components/analytics"
-import { TaskProvider } from "@/contexts/task-context"
+import Header from "./components/Header"
+import StudyTimer from "./components/StudyTimer"
+import TaskHub from "./components/TaskHub"
+import Analytics from "./components/Analytics"
+import QuickCapture from "./components/QuickCapture"
+import { ThemeProvider } from "./components/ThemeProvider"
+import { StudyProvider } from "./components/StudyProvider"
 
-export default function StudyManager() {
+export default function Home() {
   return (
-    <TaskProvider>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
-          {/* Header Section */}
-          <header className="text-center mb-10">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
-              Advanced Study Manager
-            </h1>
-            <p className="text-slate-600 text-lg">Comprehensive task tracking with AI-powered analytics and insights</p>
-          </header>
+    <ThemeProvider>
+      <StudyProvider>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800 transition-all duration-500">
+          <div className="container mx-auto px-4 py-6 max-w-6xl">
+            <Header />
 
-          {/* Dashboard Overview */}
-          <DashboardCards />
-
-          {/* Main Content Area */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
-            {/* Task Management Section */}
-            <div className="lg:col-span-2">
-              <TaskManager />
+            {/* Main Study Interface */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              <div className="lg:col-span-2">
+                <StudyTimer />
+              </div>
+              <div>
+                <QuickCapture />
+              </div>
             </div>
 
-            {/* Analytics Section */}
-            <div className="lg:col-span-1">
-              <Analytics />
-            </div>
+            {/* Analytics Dashboard */}
+            <Analytics />
+
+            {/* Task Management */}
+            <TaskHub />
           </div>
         </div>
-      </div>
-    </TaskProvider>
+      </StudyProvider>
+    </ThemeProvider>
   )
 }
